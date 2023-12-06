@@ -1,16 +1,15 @@
 const express = require("express");
-const mysql = require("mysql");
 
 const app = express();
 app.use(express.json());
-
+const cors = require('cors');
+app.use(cors());
 //mysql
-let sql = "";
 const mysql = require("mysql2");
 const con = mysql.createConnection({
-  host: "localhost",
-  user: "yourusername",
-  password: "yourpassword",
+  host: "127.0.0.1",
+  user: "root",
+  password: "mysqlpassword21",
   database: "restaurantDB" 
 });
 
@@ -24,8 +23,29 @@ con.connect(function (err) {
 
 
 
-const port = process.env.PORT || 4000;
+const port = 4000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
+
+
+app.get("/api/orders/:menuItemName", (req, res) => {
+  const menuItemName = req.params.menuItemName;
+  const sql = `
+    SELECT o.orderNumber, o.NumberofItems
+    FROM \`Order\` o
+    JOIN OrderDetails od ON o.orderNumber = od.orderNumber
+    WHERE od.menuItemName = ?;
+  `;
+
+  con.query(sql, [menuItemName], (err, results) => {
+    if (err) {
+      console.error('Error fetching data from MySQL:', err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    res.json(results);
+  });
+});
+
 
 app.get('/api/reservations', (req, res) => {
   const query = `
