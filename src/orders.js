@@ -10,6 +10,7 @@ const initialOrders = [
 const Orders = () => {
   // State to manage the orders data
   const [orders, setOrders] = useState(initialOrders);
+  const [menuItem, setMenuItem]= useState('');
   function displayOrder(){}
 
   return (
@@ -18,10 +19,9 @@ const Orders = () => {
       <div id="functionality">
         <form onSubmit={displayOrder}>
           <label>Display orders that contain:</label>
-          <input OnChange={(e) => setMenuItem(e.target.value)} type="text" className="inputBox" placeholder="Ingredient">menu item...</input>
+          <input onChange={(e) => setMenuItem(e.target.value)} type="text" className="inputBox" placeholder="menu item..."/>
         </form>
       </div>
-        <tbody>
           {orders.map((order) => (
             <tr key={order.id}>
               <td>{order.id}</td>
@@ -30,7 +30,6 @@ const Orders = () => {
               <td>${order.totalAmount.toFixed(2)}</td>
             </tr>
           ))}
-        </tbody>
     </div>
   );
 };
