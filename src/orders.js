@@ -10,20 +10,17 @@ const initialOrders = [
 const Orders = () => {
   // State to manage the orders data
   const [orders, setOrders] = useState(initialOrders);
+  function displayOrder(){}
 
   return (
     <div>
-      <h2>Orders</h2>
-
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Order Number</th>
-            <th>Customer Name</th>
-            <th>Total Amount</th>
-          </tr>
-        </thead>
+      <h1>Orders</h1>
+      <div id="functionality">
+        <form onSubmit={displayOrder}>
+          <label>Display orders that contain:</label>
+          <input OnChange={(e) => setMenuItem(e.target.value)} type="text" className="inputBox" placeholder="Ingredient">menu item...</input>
+        </form>
+      </div>
         <tbody>
           {orders.map((order) => (
             <tr key={order.id}>
@@ -34,7 +31,6 @@ const Orders = () => {
             </tr>
           ))}
         </tbody>
-      </table>
     </div>
   );
 };
