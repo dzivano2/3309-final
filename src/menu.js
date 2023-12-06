@@ -6,7 +6,7 @@ const initialMenuItems = [
   { id: 1, name: "Burger", price: 9.99 },
   { id: 2, name: "Pizza", price: 12.99 },
   { id: 3, name: "Pasta", price: 8.99 },
-  { id: 4, name: "Salad", price: 6.99 },
+  { id: 4, name: "Salad", price: 6.98 },
 ];
 
 const Menu = () => {
