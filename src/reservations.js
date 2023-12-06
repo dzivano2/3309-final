@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
+import { ReactDOM } from 'react';
 import './reservations.css'
 
 // Sample data
-const initialReservations = [
+var initialReservations = [
   { id: 1, reservationNumber: 'RES001', customerName: 'John Doe', date: '2023-12-10', time: '18:00', tableNumber: 3, numberOfPeople: 5},
   { id: 2, reservationNumber: 'RES002', customerName: 'Jane Smith', date: '2023-12-15', time: '19:30', tableNumber: 4, numberOfPeople: 4  },
   { id: 3, reservationNumber: 'RES003', customerName: 'Alice Johnson', date: '2023-12-20', time: '20:00', tableNumber: 2, numberOfPeople: 2 },
 ];
 
-const errorDiv = document.querySelector('.error');
+
+
+
 
 const Reservations = () => {
   const [reservations, setReservations] = useState(initialReservations);
@@ -19,6 +22,17 @@ const Reservations = () => {
     tableNumber: '',
     customerName: '',
   });
+
+    fetch('http://127.0.0.1:4001/api/reservations')
+      .then((response) => response.json())
+      // .then((data) => {
+      //   console.log(data)
+      //   initialReservations = data}
+      //   )
+      .then((data) => setReservations(data))
+      .catch((error) => console.error('Error fetching reservations:', error));
+
+
 
   // form input change
   const handleInputChange = (e) => {
@@ -39,9 +53,14 @@ const Reservations = () => {
       !formData.time
     ) {
       e.preventDefault();
+      const errorDiv = document.getElementById("error");
+      errorDiv.textContent = "Please fill in all fields";
+      errorDiv.style.color = 'red';
     }
     else{
     e.preventDefault();
+    const errorDiv = document.getElementById("error");
+    errorDiv.textContent = "";
 
     // creates reservation obj
     const newReservation = {
@@ -54,6 +73,18 @@ const Reservations = () => {
       time: formData.time
       // add more fields needed in the backend check
     };
+
+    fetch('http://127.0.0.1:4001  /processReservation', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newReservation),
+    })
+      .then((response) => response.json())
+      .catch((error) => console.error('Error processing reservation:', error));
+
+    
   
 
 
@@ -86,7 +117,7 @@ const Reservations = () => {
 
     for (var x = 0; x < indexes.length; x++) {
       var index = indexes[x];
-      if(initialReservations[index].tableNumber == tableNumber){
+      if(initialReservations[index].tableNumber === tableNumber){
         times.push(initialReservations[index].time);
         console.log(initialReservations[index].tableNumber)
         console.log(tableNumber)
@@ -114,7 +145,7 @@ const Reservations = () => {
 
   return (
     <div>
-      <h2>Reservations</h2>
+  
       
       <h2>Reservation Form</h2>
       <form onSubmit={handleFormSubmit}>
@@ -173,13 +204,13 @@ const Reservations = () => {
         )}
         <br />
         <button type="submit">Submit Reservation</button>
-        <div id="error"></div>
+        <p id="error"></p>
       </form>
+      <h2>Reservations</h2>
       <table>
         <thead>
           <tr>
             <th>ID</th>
-            <th>ResNum</th>
             <th>Customer Name</th>
             <th>TableNum</th>
             <th>Date</th>
@@ -191,7 +222,6 @@ const Reservations = () => {
           {reservations.map((reservation) => (
             <tr key={reservation.id}>
               <td>{reservation.id}</td>
-              <td>{reservation.reservationNumber}</td>
               <td>{reservation.customerName}</td>
               <td>{reservation.tableNumber}</td>
               <td>{reservation.date}</td>

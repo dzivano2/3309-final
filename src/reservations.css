@@ -15,6 +15,11 @@
     font-size: 2rem;
     color: #333;
     margin-top: 1rem;
+    padding-left: 2%;
+  }
+
+  table{
+    padding-left:2%;
   }
   
   form {
