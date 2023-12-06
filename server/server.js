@@ -1,4 +1,3 @@
-//express
 const express = require("express");
 const app = express();
 
@@ -11,13 +10,15 @@ const con = mysql.createConnection({
   password: "root",
 });
 
-//establish connection with database
 con.connect(function (err) {
-  if (err) throw err;
-  console.log("mysql connected");
+  if (err) {
+    console.error('Error connecting to MySQL:', err);
+    return;
+  }
+  console.log("MySQL connected");
 });
 
-app.use(express.json());
+
 
 //test query
 // sql;
@@ -27,4 +28,4 @@ app.use(express.json());
 // });
 
 const port = process.env.PORT || 4000;
-app.listen(port, () => console.log(`Using port ${port}`));
+app.listen(port, () => console.log(`Server running on port ${port}`));
