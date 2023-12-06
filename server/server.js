@@ -82,6 +82,19 @@ app.post('/processReservation', (req, res) => {
 
   
 
+app.get('/api/employees', (req, res) => {
+  const sql = 'SELECT * FROM Employee;';
+  
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching employees:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    res.json(results);
+  });
+});
+
 
   var [firstName, lastName = '1'] = customerName.split(' ');
   const phone = '1111111';

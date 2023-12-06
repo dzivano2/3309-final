@@ -8,6 +8,7 @@ import Inventory from './inventory'
 import Orders from './orders';
 import Menu from './menu';
 import Reservations from './reservations';
+import Employee from './employee';
 function App() {
   return (
     <Router>
@@ -17,6 +18,7 @@ function App() {
         <Route path="/orders" element={<Orders/>}></Route>
         <Route path="/menu" element={<Menu/>}></Route>
         <Route path="/reservations" element={<Reservations/>}></Route>
+        <Route path="/employee" element={<Employee/>}></Route>
   
   
   
