@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ReactDOM } from 'react';
 import './reservations.css'
 
-// Sample data
+// sample data
 var initialReservations = [
   { id: 1, reservationNumber: 'RES001', customerName: 'John Doe', date: '2023-12-10', time: '18:00', tableNumber: 3, numberOfPeople: 5},
   { id: 2, reservationNumber: 'RES002', customerName: 'Jane Smith', date: '2023-12-15', time: '19:30', tableNumber: 4, numberOfPeople: 4  },
