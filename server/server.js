@@ -18,11 +18,5 @@ con.connect(function (err) {
 
 app.use(express.json());
 
-//customer in order where number of items > #
-//make reservation
-//
-//
-//
-
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Using port ${port}`));
