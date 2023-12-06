@@ -1,0 +1,62 @@
+/* HomePage.css */
+
+/* Center the content vertically and horizontally */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Make the container full-height */
+    background-color: #f4f4f4; /* Light background color */
+  }
+  
+  /* Style for the header text */
+  h1 {
+    font-size: 2rem;
+    color: #333; /* Dark text color */
+    margin-top: 1rem;
+  }
+  
+  /* Style for the cards */
+  .card {
+    width: 100%;
+    max-width: 400px; /* Adjust the maximum width as needed */
+    background-color: #fff; /* White card background */
+    margin: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for the cards */
+  }
+  
+  /* Style for the card content */
+  .card-body {
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  /* Style for headings */
+  h2 {
+    font-size: 1.5rem;
+    color: #333; /* Dark text color */
+  }
+  
+  /* Style for the paragraphs */
+  p {
+    color: #666; /* Gray text color */
+  }
+  
+  /* Style for the primary buttons */
+  .btn-primary {
+    background-color: #ff5722; /* Restaurant-themed color */
+    color: #fff; /* White text color */
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  /* Hover effect for buttons */
+  .btn-primary:hover {
+    background-color: #ff6e40; /* Slightly lighter color on hover */
+  }
+  
