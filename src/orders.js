@@ -1,35 +1,53 @@
 import React, { useState } from 'react';
-
-// Sample orders data (replace with your own data)
-const initialOrders = [
-  { id: 1, orderNumber: 'ORD001', customerName: 'John Doe', totalAmount: 50.0 },
-  { id: 2, orderNumber: 'ORD002', customerName: 'Jane Smith', totalAmount: 75.0 },
-  { id: 3, orderNumber: 'ORD003', customerName: 'Alice Johnson', totalAmount: 30.0 },
-];
+import './orders.css';
 
 const Orders = () => {
-  // State to manage the orders data
-  const [orders, setOrders] = useState(initialOrders);
-  const [menuItem, setMenuItem]= useState('');
-  function displayOrder(){}
+  const [orders, setOrders] = useState([]);
+  const [menuItem, setMenuItem] = useState('');
+  const [error, setError] = useState(null);
+
+  const fetchOrder = (e) => {
+    e.preventDefault()
+    setError(null); // Reset error state before making a new request
+
+    fetch(`http://localhost:4000/api/orders/${menuItem}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch orders. Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setOrders(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error.message);
+        setError('Failed to fetch orders. Please try again.');
+      });
+  };
 
   return (
     <div>
       <h1>Orders</h1>
       <div id="functionality">
-        <form onSubmit={displayOrder}>
+        <form onSubmit={fetchOrder}>
           <label>Display orders that contain:</label>
-          <input onChange={(e) => setMenuItem(e.target.value)} type="text" className="inputBox" placeholder="menu item..."/>
+          <input
+            onChange={(e) => setMenuItem(e.target.value)}
+            type="text"
+            className="inputBox"
+            placeholder="menu item..."
+          />
+          <button type="submit">Fetch Orders</button>
         </form>
       </div>
-          {orders.map((order) => (
-            <tr key={order.id}>
-              <td>{order.id}</td>
-              <td>{order.orderNumber}</td>
-              <td>{order.customerName}</td>
-              <td>${order.totalAmount.toFixed(2)}</td>
-            </tr>
-          ))}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {orders.map((order) => (
+        <div id='orders' key={order.orderNumber}>
+          <h1>Order Number: {order.orderNumber}</h1>
+          <h2>Number of Items: {order.NumberofItems}</h2>
+        </div>
+      ))}
     </div>
   );
 };
