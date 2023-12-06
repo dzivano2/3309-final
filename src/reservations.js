@@ -3,10 +3,12 @@ import './reservations.css'
 
 // Sample data
 const initialReservations = [
-  { id: 1, reservationNumber: 'RES001', customerName: 'John Doe', date: '2023-12-10', time: '18:00' },
-  { id: 2, reservationNumber: 'RES002', customerName: 'Jane Smith', date: '2023-12-15', time: '19:30' },
-  { id: 3, reservationNumber: 'RES003', customerName: 'Alice Johnson', date: '2023-12-20', time: '20:00' },
+  { id: 1, reservationNumber: 'RES001', customerName: 'John Doe', date: '2023-12-10', time: '18:00', tableNumber: 3, numberOfPeople: 5},
+  { id: 2, reservationNumber: 'RES002', customerName: 'Jane Smith', date: '2023-12-15', time: '19:30', tableNumber: 4, numberOfPeople: 4  },
+  { id: 3, reservationNumber: 'RES003', customerName: 'Alice Johnson', date: '2023-12-20', time: '20:00', tableNumber: 2, numberOfPeople: 2 },
 ];
+
+const errorDiv = document.querySelector('.error');
 
 const Reservations = () => {
   const [reservations, setReservations] = useState(initialReservations);
@@ -29,6 +31,16 @@ const Reservations = () => {
 
   // form submission
   const handleFormSubmit = (e) => {
+    if (
+      !formData.customerName ||
+      !formData.tableNumber ||
+      !formData.selectedDate ||
+      !formData.numberOfPeople ||
+      !formData.time
+    ) {
+      e.preventDefault();
+    }
+    else{
     e.preventDefault();
 
     // creates reservation obj
@@ -36,8 +48,13 @@ const Reservations = () => {
       id: reservations.length + 1,
       reservationNumber: `RES00${reservations.length + 1}`,
       customerName: formData.customerName,
-      // add more fields needed for me
+      tableNumber: formData.tableNumber,
+      date: formData.selectedDate,
+      numberOfPeople: formData.numberOfPeople,
+      time: formData.time
+      // add more fields needed in the backend check
     };
+  
 
 
 
@@ -50,11 +67,12 @@ const Reservations = () => {
       tableNumber: '',
       customerName: '',
     });
-  };
+  }}
+
 
   
 
-  const availableTimes = (date) => {
+  const availableTimes = (date, tableNumber) => {
     var count = 0;
     var times= [];
     var availabletime = [];
@@ -68,9 +86,13 @@ const Reservations = () => {
 
     for (var x = 0; x < indexes.length; x++) {
       var index = indexes[x];
-      times.push(initialReservations[index].time);
+      if(initialReservations[index].tableNumber == tableNumber){
+        times.push(initialReservations[index].time);
+        console.log(initialReservations[index].tableNumber)
+        console.log(tableNumber)
+      }
     }
-    console.log(initialReservations.map((reservation, currentIndex) => reservation.date === date && currentIndex))
+  
 
 
     for(var i =0; i < 48; i++){
@@ -80,7 +102,7 @@ const Reservations = () => {
       const hours = Math.floor(i / 2);
       const minutes = i % 2 === 0 ? '00' : '30';
       if (!times.includes(hours+":"+minutes) && count===0){
-        console.log(`${hours}:${minutes}`)
+        //console.log(`${hours}:${minutes}`)
         availabletime.push(`${hours}:${minutes}`);
       }
       else{
@@ -109,7 +131,7 @@ const Reservations = () => {
         <label>
           Table Number:
           <input
-            type="text"
+            type="number"
             name="tableNumber"
             value={formData.tableNumber}
             onChange={handleInputChange}
@@ -131,16 +153,17 @@ const Reservations = () => {
           <input
             type="date"
             name="selectedDate"
+            defaultValue={2023-12-10}
             value={formData.selectedDate}
             onChange={handleInputChange}
           />
         </label>
-        {formData.selectedDate && (
+        {formData.selectedDate && formData.tableNumber && (
           <>
             <label htmlFor="time">Time</label>
             <select id="time" name="time" value={formData.time} onChange={handleInputChange} required>
               <option value="" disabled>Select Time</option>
-              {availableTimes(formData.selectedDate).map((time, index) => (
+              {availableTimes(formData.selectedDate, formData.tableNumber).map((time, index) => (
                 <option key={index} value={time}>
                   {time}
                 </option>
@@ -150,15 +173,18 @@ const Reservations = () => {
         )}
         <br />
         <button type="submit">Submit Reservation</button>
+        <div id="error"></div>
       </form>
       <table>
         <thead>
           <tr>
             <th>ID</th>
-            <th>Reservation Number</th>
+            <th>ResNum</th>
             <th>Customer Name</th>
+            <th>TableNum</th>
             <th>Date</th>
             <th>Time</th>
+            <th>NumPeople</th>
           </tr>
         </thead>
         <tbody>
@@ -167,8 +193,11 @@ const Reservations = () => {
               <td>{reservation.id}</td>
               <td>{reservation.reservationNumber}</td>
               <td>{reservation.customerName}</td>
+              <td>{reservation.tableNumber}</td>
               <td>{reservation.date}</td>
               <td>{reservation.time}</td>
+              <td>{reservation.numberOfPeople}</td>
+              
             </tr>
           ))}
         </tbody>
