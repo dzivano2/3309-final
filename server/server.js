@@ -1,12 +1,12 @@
 const express = require("express");
-const mysql = require("mysql");
-
 const app = express();
-app.use(express.json());
 
 let cors = require("cors");
 app.use(cors());
 
+//mysql
+let sql = "";
+const mysql = require("mysql2");
 const con = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
@@ -35,7 +35,21 @@ con.connect(function (err) {
 
 
 
-const port = process.env.PORT || 4001;
+//test query
+// sql;
+// con.query(sql, function (err, result) {
+//   if (err) throw err;
+//   console.log("Result: " + result);
+// });
+
+//test query
+// sql;
+// con.query(sql, function (err, result) {
+//   if (err) throw err;
+//   console.log("Result: " + result);
+// });
+
+const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
 
 app.get('/api/reservations', (req, res) => {
