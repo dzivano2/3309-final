@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import './reservations.css'
 
-// Sample reservations data
+// Sample data
 const initialReservations = [
   { id: 1, reservationNumber: 'RES001', customerName: 'John Doe', date: '2023-12-10', time: '18:00' },
   { id: 2, reservationNumber: 'RES002', customerName: 'Jane Smith', date: '2023-12-15', time: '19:30' },
@@ -38,6 +39,8 @@ const Reservations = () => {
       // add more fields needed for me
     };
 
+
+
     // update reservation state w new reservation
     setReservations((prevReservations) => [...prevReservations, newReservation]);
 
@@ -47,6 +50,44 @@ const Reservations = () => {
       tableNumber: '',
       customerName: '',
     });
+  };
+
+  
+
+  const availableTimes = (date) => {
+    var count = 0;
+    var times= [];
+    var availabletime = [];
+
+    //checks if the dates match in the initial array and adds the index of it to an array
+    var indexes = initialReservations.reduce((acc, reservation, currentIndex) => {
+      if (reservation.date === date) {
+        acc.push(currentIndex);
+      }  return acc;
+    }, []);
+
+    for (var x = 0; x < indexes.length; x++) {
+      var index = indexes[x];
+      times.push(initialReservations[index].time);
+    }
+    console.log(initialReservations.map((reservation, currentIndex) => reservation.date === date && currentIndex))
+
+
+    for(var i =0; i < 48; i++){
+      if (count===3){
+        count=0;
+      }
+      const hours = Math.floor(i / 2);
+      const minutes = i % 2 === 0 ? '00' : '30';
+      if (!times.includes(hours+":"+minutes) && count===0){
+        console.log(`${hours}:${minutes}`)
+        availabletime.push(`${hours}:${minutes}`);
+      }
+      else{
+        count++;
+      }
+    }
+    return availabletime;
   };
 
   return (
@@ -94,6 +135,19 @@ const Reservations = () => {
             onChange={handleInputChange}
           />
         </label>
+        {formData.selectedDate && (
+          <>
+            <label htmlFor="time">Time</label>
+            <select id="time" name="time" value={formData.time} onChange={handleInputChange} required>
+              <option value="" disabled>Select Time</option>
+              {availableTimes(formData.selectedDate).map((time, index) => (
+                <option key={index} value={time}>
+                  {time}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
         <br />
         <button type="submit">Submit Reservation</button>
       </form>
