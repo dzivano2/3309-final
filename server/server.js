@@ -8,11 +8,14 @@ app.use(cors());
 const mysql = require("mysql");
 
 const con = mysql.createConnection({
+
   host: "127.0.0.1",
   user: "root",
+
   password: "password",
   database: "restaurantDB" ,
   port:"4000"
+
 });
 
 const dbConfig = {
