@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
+//complex function is changing price of all items that contain specific ingredient
 // Sample menu items data (replace with your own data)
 const initialMenuItems = [
-  { id: 1, name: 'Burger', price: 9.99 },
-  { id: 2, name: 'Pizza', price: 12.99 },
-  { id: 3, name: 'Pasta', price: 8.99 },
-  { id: 4, name: 'Salad', price: 6.99 },
+  { id: 1, name: "Burger", price: 9.99 },
+  { id: 2, name: "Pizza", price: 12.99 },
+  { id: 3, name: "Pasta", price: 8.99 },
+  { id: 4, name: "Salad", price: 6.99 },
 ];
 
 const Menu = () => {
