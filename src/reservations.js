@@ -134,6 +134,9 @@ const Reservations = () => {
       if (hour < 10){
        hours = hours + hour;
       }
+      else{
+        hours = hour;
+      }
       const minutes = i % 2 === 0 ? '00' : '30';
       if (!times.includes(hours+":"+minutes) && count===0){
         console.log(times)
