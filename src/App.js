@@ -11,21 +11,18 @@ import Reservations from './reservations';
 import Employee from './employee';
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/orders" element={<Orders/>}></Route>
-        <Route path="/menu" element={<Menu/>}></Route>
-        <Route path="/reservations" element={<Reservations/>}></Route>
-        <Route path="/employee" element={<Employee/>}></Route>
-  
-  
-  
-        
-</Routes>
-
-    </Router>
+    <div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/inventory" element={<Inventory />} />
+          <Route path="/orders" element={<Orders/>}/>
+          <Route path="/menu" element={<Menu/>}/>
+          <Route path="/reservations" element={<Reservations/>}/>
+          <Route path="/employee" element={<Employee/>}/>
+        </Routes>
+      </Router>
+    </div>
   );
 }
 

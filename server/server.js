@@ -5,13 +5,25 @@ app.use(express.json());
 const cors = require('cors');
 app.use(cors());
 //mysql
-const mysql = require("mysql2");
+const mysql = require("mysql");
+
 const con = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "mysqlpassword21",
-  database: "restaurantDB" 
+  password: "password",
+  database: "restaurantDB" ,
+  port:"4000"
 });
+
+const dbConfig = {
+  host: "127.0.0.1",
+  user: "root",
+  password: "password",
+  database: "restaurantDB" ,
+  port:"4000"
+};
+
+const pool = mysql.createPool(dbConfig);
 
 con.connect(function (err) {
   if (err) {
@@ -23,7 +35,7 @@ con.connect(function (err) {
 
 
 
-const port = 4000;
+const port = 4001;
 app.listen(port, () => console.log(`Server running on port ${port}`));
 
 
@@ -71,6 +83,43 @@ app.get('/api/reservations', (req, res) => {
   });
 });
 
+
+app.get('/api/employees', (req, res) => {
+  const sql = 'SELECT * FROM Employee;';
+  
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching employees:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    res.json(results);
+  });
+});
+
+app.put('/api/employees/:employeeId', (req, res) => {
+  const employeeId  = req.params.employeeId;
+  const  hourlyWage  = req.body.hourlyWage;
+
+  if (!employeeId || !hourlyWage) {
+    return res.status(400).json({ error: 'Employee ID and Hourly Wage are required.' });
+  }
+
+  const sql =" UPDATE Employee SET HourlyWage = ? WHERE EmployeeID = ? AND Position = 'Waiter'";
+  ;
+
+  con.query(sql, [hourlyWage, employeeId], (err, results) => {
+    if (err) {
+      console.error('Error updating employee:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    res.json({ success: true, message: 'Employee updated successfully.' });
+  });
+});
+
+
+
 app.post('/processReservation', (req, res) => {
   const {
     customerName,
@@ -82,18 +131,7 @@ app.post('/processReservation', (req, res) => {
 
   
 
-app.get('/api/employees', (req, res) => {
-  const sql = 'SELECT * FROM Employee;';
-  
-  connection.query(sql, (err, results) => {
-    if (err) {
-      console.error('Error fetching employees:', err);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
 
-    res.json(results);
-  });
-});
 
 
   var [firstName, lastName = '1'] = customerName.split(' ');
