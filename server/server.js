@@ -46,6 +46,37 @@ app.get("/api/orders/:menuItemName", (req, res) => {
   });
 });
 
+app.get('/api/menuItems', (req, res) => {
+  const sql = 'SELECT * FROM MenuItem;';
+  
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching employees:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    res.json(results);
+  });
+});
+
+// Route to increase the price of a MenuItem
+app.put('/api/menuItems/:id/increaseprice', (req, res) => {
+  const itemId = req.params.id;
+  const increaseAmount = req.body.increaseAmount;
+
+  const sql = 'UPDATE MenuItem SET price = price + ? WHERE Name = ?';
+
+  con.query(sql, [increaseAmount, itemId], (err, results) => {
+    if (err) {
+      console.error('Error updating price: ' + err.message);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    res.status(200).send('Price updated successfully');
+  });
+});
+
 
 app.get('/api/reservations', (req, res) => {
   const query = `
@@ -79,21 +110,6 @@ app.post('/processReservation', (req, res) => {
     numberOfPeople,
     tableNumber,
   } = req.body;
-
-  
-
-app.get('/api/employees', (req, res) => {
-  const sql = 'SELECT * FROM Employee;';
-  
-  connection.query(sql, (err, results) => {
-    if (err) {
-      console.error('Error fetching employees:', err);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-
-    res.json(results);
-  });
-});
 
 
   var [firstName, lastName = '1'] = customerName.split(' ');
