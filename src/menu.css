@@ -1,74 +1,62 @@
-.menuItem {
-  display: inline-block;
-  padding-left: 10px;
+/* Menu.css */
+
+/* Center the content vertically and horizontally */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Make the container full-height */
+  background-color: #f4f4f4; /* Light background color */
+}
+
+/* Style for the header text */
+h1 {
+  font-size: 2rem;
+  color: #333; /* Dark text color */
+  margin-top: 1rem;
+}
+
+/* Style for the table */
+table {
   width: 100%;
-  height: 100%;
-  max-width: 400px;
-  background-color: #fff; /* White card background */
+  max-width: 400px; /* Adjust the maximum width as needed */
+  background-color: #fff; /* White table background */
   margin: 1rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for the cards */
-  vertical-align: bottom;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for the table */
 }
 
-.itemName {
-  display: inline-block;
-  vertical-align: bottom;
+/* Style for table headers */
+th {
+  background-color: #333; /* Dark header background color */
+  color: #fff; /* White text color */
+  padding: 1rem;
 }
 
-.itemPrice {
-  vertical-align: bottom;
-  float: right;
-  margin-right: 3%;
+/* Style for table rows */
+tr {
+  border-bottom: 1px solid #ddd; /* Gray border for rows */
 }
 
-.inputBox {
-  width: 100%;
-  max-width: 100px;
-  padding: 0.5rem;
-  margin: 0.5rem;
-  border: 1px solid #ccc; /* Border color */
-  border-radius: 4px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Shadow for the input box */
+/* Style for table data cells */
+td {
+  padding: 1rem;
 }
 
-/* Placeholder style for the input box */
-.inputBox::placeholder {
-  color: #999; /* Lighter text color for the placeholder */
-}
-
-/* Focus style for the input box */
-.inputBox:focus {
-  outline: none; /* Remove default focus outline */
-  border-color: #ff5722; /* Highlight color on focus */
-  box-shadow: 0 0 4px rgba(255, 87, 34, 0.4); /* Box shadow on focus */
-}
-
-/* Error state style for the input box */
-.inputBox.error {
-  border-color: #f44336; /* Red border color for error state */
-}
-
-#itemFunction {
-  margin: auto;
-  text-align: center;
-}
-
-button {
-  background-color: #ff5722;
-  color: #fff;
+/* Style for the clear button */
+.clear-button {
+  background-color: #ff5722; /* Restaurant-themed color */
+  color: #fff; /* White text color */
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
+  margin-top: 1rem;
 }
 
-/* Hover effect for buttons */
-button:hover {
-  background-color: #ff6e40;
-}
-
-body {
-  background-color: #f4f4f4;
+/* Hover effect for the clear button */
+.clear-button:hover {
+  background-color: #ff6e40; /* Slightly lighter color on hover */
 }

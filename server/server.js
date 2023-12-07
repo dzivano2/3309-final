@@ -5,13 +5,28 @@ app.use(express.json());
 const cors = require('cors');
 app.use(cors());
 //mysql
-const mysql = require("mysql2");
+const mysql = require("mysql");
+
 const con = mysql.createConnection({
+
+  host: "127.0.0.1",
+
+  user: "DBTeam",
+  password: "OurTeam2025",
+  database: "restaurantDB"
+
+
+});
+
+const dbConfig = {
   host: "127.0.0.1",
   user: "root",
-  password: "mysqlpassword21",
-  database: "restaurantDB" 
-});
+  password: "password",
+  database: "restaurantDB" ,
+  port:"4000"
+};
+
+const pool = mysql.createPool(dbConfig);
 
 con.connect(function (err) {
   if (err) {
@@ -23,7 +38,7 @@ con.connect(function (err) {
 
 
 
-const port = 4000;
+const port = 4001;
 app.listen(port, () => console.log(`Server running on port ${port}`));
 
 
@@ -78,6 +93,28 @@ app.put('/api/menuItems/:id/increaseprice', (req, res) => {
 });
 
 
+app.get('/api/inventory/latest-batch', (req, res) => {
+    const query = `
+      SELECT InventoryName, ExpiryDates, TotalQuantities
+      FROM Inventory i1
+      WHERE ExpiryDates = (
+          SELECT MAX(i2.ExpiryDates)
+          FROM Inventory i2
+          WHERE i1.InventoryName = i2.InventoryName
+      );
+    `;
+  
+    con.query(query, (error, results) => {
+      if (error) {
+        console.error('Error executing the query:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+        return;
+      }
+  
+      res.json(results);
+    });
+  });
+  
 app.get('/api/reservations', (req, res) => {
   const query = `
     SELECT 
@@ -102,6 +139,43 @@ app.get('/api/reservations', (req, res) => {
   });
 });
 
+
+app.get('/api/employees', (req, res) => {
+  const sql = 'SELECT * FROM Employee;';
+  
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching employees:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    res.json(results);
+  });
+});
+
+app.put('/api/employees/:employeeId', (req, res) => {
+  const employeeId  = req.params.employeeId;
+  const  hourlyWage  = req.body.hourlyWage;
+
+  if (!employeeId || !hourlyWage) {
+    return res.status(400).json({ error: 'Employee ID and Hourly Wage are required.' });
+  }
+
+  const sql =" UPDATE Employee SET HourlyWage = ? WHERE EmployeeID = ? AND Position = 'Waiter'";
+  ;
+
+  con.query(sql, [hourlyWage, employeeId], (err, results) => {
+    if (err) {
+      console.error('Error updating employee:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    res.json({ success: true, message: 'Employee updated successfully.' });
+  });
+});
+
+
+
 app.post('/processReservation', (req, res) => {
   const {
     customerName,
@@ -110,6 +184,10 @@ app.post('/processReservation', (req, res) => {
     numberOfPeople,
     tableNumber,
   } = req.body;
+
+  
+
+
 
 
   var [firstName, lastName = '1'] = customerName.split(' ');
@@ -142,3 +220,46 @@ app.post('/processReservation', (req, res) => {
     });
   });
 });
+// Assuming 'con' is your MySQL connection and 'app' is your Express app from the provided backend code
+
+// Retrieve all menu items
+app.get('/api/menu-items', (req, res) => {
+    const sql = 'SELECT Name, Description, Price FROM MenuItem;';
+    con.query(sql, (err, results) => {
+      if (err) {
+        console.error('Error fetching menu items:', err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+      res.json(results);
+    });
+  });
+  // Create a new route to handle the query
+// Add a new endpoint to filter menu items based on the specified minimum orders
+// Assuming you have already created an Express app and established a MySQL connection
+
+// Define a route to get menu items ordered more than a specified number of times
+app.get('/api/menu-items/ordered-more-than/:minOrders', (req, res) => {
+    const minOrders = req.params.minOrders;
+    const sql = `
+      SELECT MenuItemName, COUNT(*) AS TimesOrdered
+      FROM OrderDetails
+      GROUP BY MenuItemName
+      HAVING TimesOrdered > ?;
+    `;
+  
+    con.query(sql, [minOrders], (err, results) => {
+      if (err) {
+        console.error('Error fetching menu items:', err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+      res.json(results);
+    });
+  });
+  
+  
+  
+  
+
+  
