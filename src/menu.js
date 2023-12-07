@@ -1,56 +1,58 @@
-import React, { useState } from "react";
-import "./menu.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-//complex function is changing price of all items that contain specific ingredient
-// Sample menu items data (replace with your own data)
-const initialMenuItems = [
-  { id: 1, name: "Burger", price: 9.99 },
-  { id: 2, name: "Pizza", price: 12.99 },
-  { id: 3, name: "Pasta", price: 8.99 },
-  { id: 4, name: "Salad", price: 6.98 },
-];
+
 
 const Menu = () => {
-  // State to manage the menu items data
-  const [menuItems, setMenuItems] = useState(initialMenuItems);
+  const [minOrders, setMinOrders] = useState(); // Default minimum orders
+  const [menuItems, setMenuItems] = useState([]);
 
-  //store user inputs
-  const [ingredient, setIngredient] = useState("");
-  const [change, setChange] = useState(0);
+  useEffect(() => {
+    // Fetch menu items that have been ordered more than minOrders times
+    axios.get(`http://localhost:4000/api/menu-items/ordered-more-than/${minOrders}`)
+      .then(response => {
+        setMenuItems(response.data);
+      })
+      .catch(error => console.error('Error fetching menu items:', error));
+  }, [minOrders]);
+  const clearMenu = () => {
+    // Clear the menu by setting an empty array
+    setMenuItems([]);
+  };
 
-  function handleIncrease() {}
 
   return (
-    <div>
-      <h1>Menu</h1>
-      <div id="itemFunction">
-        <form onSubmit={handleIncrease}>
-          <label>Increase price of dishes that contain: </label>
-          <input
-            type="text"
-            className="inputBox"
-            placeholder="Ingredient"
-            onChange={(e) => setIngredient(e.target.value)}
-          ></input>
-          <label>By: </label>
-          <input
-            type="number"
-            className="inputBox"
-            placeholder="Change"
-            onChange={(e) => setChange(e.target.value)}
-          ></input>
-          <button type="submit">Submit</button>
-        </form>
+    <div className="menu-container"> {/* Apply a container class */}
+      <h1 className="menu-title">Menu Items Ordered More Than</h1> {/* Apply a title class */}
+      <div className="menu-input">
+        <label>Minimum Orders:</label>
+        <input
+          type="number"
+          value={minOrders}
+          onChange={(e) => setMinOrders(e.target.value)}
+        />
+        <button onClick={clearMenu}>Clear Menu</button> {/* Add a clear button */}
       </div>
-      {menuItems.map((menuItem) => (
-        <div className="menuItem" key={menuItem.id}>
-          <h2 className="itemid">{menuItem.id}</h2>
-          <h3 className="itemName">{menuItem.name}</h3>
-          <h3 className="itemPrice">${menuItem.price.toFixed(2)}</h3>
-        </div>
-      ))}
+      <table className="menu-table"> {/* Apply a table class */}
+        <thead>
+          <tr>
+            <th>Menu Item</th>
+            <th>Times Ordered</th>
+          </tr>
+        </thead>
+        <tbody>
+          {menuItems.map((menuItem) => (
+            <tr key={menuItem.MenuItemName}>
+              <td>{menuItem.MenuItemName}</td>
+              <td>{menuItem.TimesOrdered}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
+  
 
 export default Menu;
+

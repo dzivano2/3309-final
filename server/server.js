@@ -10,11 +10,11 @@ const mysql = require("mysql");
 const con = mysql.createConnection({
 
   host: "127.0.0.1",
-  user: "root",
 
-  password: "password",
-  database: "restaurantDB" ,
-  port:"4000"
+  user: "DBTeam",
+  password: "OurTeam2025",
+  database: "restaurantDB"
+
 
 });
 
@@ -61,7 +61,28 @@ app.get("/api/orders/:menuItemName", (req, res) => {
   });
 });
 
-
+app.get('/api/inventory/latest-batch', (req, res) => {
+    const query = `
+      SELECT InventoryName, ExpiryDates, TotalQuantities
+      FROM Inventory i1
+      WHERE ExpiryDates = (
+          SELECT MAX(i2.ExpiryDates)
+          FROM Inventory i2
+          WHERE i1.InventoryName = i2.InventoryName
+      );
+    `;
+  
+    con.query(query, (error, results) => {
+      if (error) {
+        console.error('Error executing the query:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+        return;
+      }
+  
+      res.json(results);
+    });
+  });
+  
 app.get('/api/reservations', (req, res) => {
   const query = `
     SELECT 
@@ -167,3 +188,46 @@ app.post('/processReservation', (req, res) => {
     });
   });
 });
+// Assuming 'con' is your MySQL connection and 'app' is your Express app from the provided backend code
+
+// Retrieve all menu items
+app.get('/api/menu-items', (req, res) => {
+    const sql = 'SELECT Name, Description, Price FROM MenuItem;';
+    con.query(sql, (err, results) => {
+      if (err) {
+        console.error('Error fetching menu items:', err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+      res.json(results);
+    });
+  });
+  // Create a new route to handle the query
+// Add a new endpoint to filter menu items based on the specified minimum orders
+// Assuming you have already created an Express app and established a MySQL connection
+
+// Define a route to get menu items ordered more than a specified number of times
+app.get('/api/menu-items/ordered-more-than/:minOrders', (req, res) => {
+    const minOrders = req.params.minOrders;
+    const sql = `
+      SELECT MenuItemName, COUNT(*) AS TimesOrdered
+      FROM OrderDetails
+      GROUP BY MenuItemName
+      HAVING TimesOrdered > ?;
+    `;
+  
+    con.query(sql, [minOrders], (err, results) => {
+      if (err) {
+        console.error('Error fetching menu items:', err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+      res.json(results);
+    });
+  });
+  
+  
+  
+  
+
+  
