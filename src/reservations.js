@@ -97,6 +97,7 @@ const Reservations = () => {
       tableNumber: '',
       customerName: '',
     });
+    window.location.reload();
   }}
 
 
@@ -106,20 +107,19 @@ const Reservations = () => {
     var count = 0;
     var times= [];
     var availabletime = [];
-
     //checks if the dates match in the initial array and adds the index of it to an array
-    var indexes = initialReservations.reduce((acc, reservation, currentIndex) => {
+    var indexes = reservations.reduce((acc, reservation, currentIndex) => {
       if (reservation.date === date) {
         acc.push(currentIndex);
       }  return acc;
     }, []);
 
+
+
     for (var x = 0; x < indexes.length; x++) {
       var index = indexes[x];
-      if(initialReservations[index].tableNumber === tableNumber){
-        times.push(initialReservations[index].time);
-        console.log(initialReservations[index].tableNumber)
-        console.log(tableNumber)
+      if(reservations[index].tableNumber == tableNumber){
+        times.push(reservations[index].time);
       }
     }
   
@@ -129,10 +129,14 @@ const Reservations = () => {
       if (count===3){
         count=0;
       }
-      const hours = Math.floor(i / 2);
+      const hour = Math.floor(i / 2);
+      var hours = "0"
+      if (hour < 10){
+       hours = hours + hour;
+      }
       const minutes = i % 2 === 0 ? '00' : '30';
       if (!times.includes(hours+":"+minutes) && count===0){
-        //console.log(`${hours}:${minutes}`)
+        console.log(times)
         availabletime.push(`${hours}:${minutes}`);
       }
       else{
