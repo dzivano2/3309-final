@@ -23,16 +23,20 @@ const HomePage = () => {
     navigate('/menu');
   };
 
+  const goToEmployee = () => {
+    navigate('/employee');
+  };
+
 
   return (
     <div className="col-md-6">
   <div className="card mb-4">
     <div className="card-body">
-      <h2>Reservations</h2>
-      <p>View and manage reservations here.</p>
+      <h2>Employee</h2>
+      <p>View and manage employees here.</p>
       <button
         className="btn btn-primary"
-        onClick={goToReservations}
+        onClick={goToEmployee}
       >
         Go to Reservations
       </button>

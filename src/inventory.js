@@ -10,7 +10,7 @@ const Inventory = () => {
   const fetchInventoryData = () => {
     setIsLoading(true);
     setError(null);
-    fetch('http://localhost:4000/api/inventory/latest-batch')
+    fetch('http://localhost:4001/api/inventory/latest-batch')
       .then(response => {
         if (!response.ok) {
           throw new Error('Something went wrong!');

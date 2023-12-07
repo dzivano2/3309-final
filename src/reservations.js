@@ -22,7 +22,7 @@ const Reservations = () => {
     customerName: '',
   });
 
-    fetch(`http://localhost:${port}/api/reservations`)
+    fetch(`http://127.0.0.1:${port}/api/reservations`)
       .then((response) => response.json())
       // .then((data) => {
       //   console.log(data)
@@ -73,7 +73,7 @@ const Reservations = () => {
       // add more fields needed in the backend check
     };
 
-    fetch(`http://localhost:${port}/processReservation`, {
+    fetch(`http://127.0.0.1:${port}/processReservation`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

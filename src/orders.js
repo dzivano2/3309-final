@@ -10,7 +10,7 @@ const Orders = () => {
     e.preventDefault()
     setError(null); // Reset error state before making a new request
 
-    fetch(`http://localhost:4000/api/orders/${menuItem}`)
+    fetch(`http://localhost:4001/api/orders/${menuItem}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`Failed to fetch orders. Status: ${response.status}`);

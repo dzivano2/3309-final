@@ -5,14 +5,14 @@ app.use(express.json());
 const cors = require('cors');
 app.use(cors());
 //mysql
-const mysql = require("mysql");
+const mysql = require("mysql2");
 
 const con = mysql.createConnection({
 
   host: "127.0.0.1",
 
-  user: "DBTeam",
-  password: "OurTeam2025",
+  user: "root",
+  password: "mysqlpassword21",
   database: "restaurantDB"
 
 
@@ -21,9 +21,9 @@ const con = mysql.createConnection({
 const dbConfig = {
   host: "127.0.0.1",
   user: "root",
-  password: "password",
+  password: "mysqlpassword21",
   database: "restaurantDB" ,
-  port:"4000"
+  port:"3306"
 };
 
 const pool = mysql.createPool(dbConfig);
