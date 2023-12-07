@@ -38,6 +38,19 @@ const HomePage = () => {
         className="btn btn-primary"
         onClick={goToEmployee}
       >
+        Go to Employees
+      </button>
+    </div>
+  </div>
+    <div className="col-md-6">
+  <div className="card mb-4">
+    <div className="card-body">
+      <h2>Reservations</h2>
+      <p>View and manage reservations here.</p>
+      <button
+        className="btn btn-primary"
+        onClick={goToReservations}
+      >
         Go to Reservations
       </button>
     </div>
@@ -85,6 +98,7 @@ const HomePage = () => {
   </div>
 </div>
 
+</div>
 </div>
 
 
