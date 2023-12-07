@@ -7,78 +7,83 @@ import './HomePage.css';
 const HomePage = () => {
   const navigate = useNavigate();
 
-  const handleNavigation = (path) => {
-    navigate(path);
+  const goToReservations = () => {
+    navigate('/reservations');
   };
 
+  const goToOrders = () => {
+    navigate('/orders');
+  };
+
+  const goToInventory = () => {
+    navigate('/inventory');
+  };
+
+  const goToMenu = () => {
+    navigate('/menu');
+  };
+
+
   return (
-    <div className="container">
-      <h1 className="mt-4">Dashboard</h1>
-
-      <div className="row">
-        <div className="col-md-6">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h2>Reservations</h2>
-              <p>View and manage reservations here.</p>
-              <button
-                className="btn btn-primary"
-                onClick={() => handleNavigation('/reservations')}
-              >
-                Go to Reservations
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-6">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h2>Orders</h2>
-              <p>Check and process orders in this section.</p>
-              <button
-                className="btn btn-primary"
-                onClick={() => handleNavigation('/orders')}
-              >
-                Go to Orders
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col-md-6">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h2>Inventory</h2>
-              <p>Manage inventory and stock levels.</p>
-              <button
-                className="btn btn-primary"
-                onClick={() => handleNavigation('/inventory')}
-              >
-                Go to Inventory
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-6">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h2>Menu</h2>
-              <p>Update and customize your menu items.</p>
-              <button
-                className="btn btn-primary"
-                onClick={() => handleNavigation('/menu')}
-              >
-                Go to Menu
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="col-md-6">
+  <div className="card mb-4">
+    <div className="card-body">
+      <h2>Reservations</h2>
+      <p>View and manage reservations here.</p>
+      <button
+        className="btn btn-primary"
+        onClick={goToReservations}
+      >
+        Go to Reservations
+      </button>
     </div>
+  </div>
+  <div className="col-md-6">
+  <div className="card mb-4">
+    <div className="card-body">
+      <h2>Orders</h2>
+      <p>Check and process orders in this section.</p>
+      <button
+        className="btn btn-primary"
+        onClick={goToOrders}
+      >
+        Go to Orders
+      </button>
+    </div>
+  </div>
+</div>
+<div className="col-md-6">
+  <div className="card mb-4">
+    <div className="card-body">
+      <h2>Inventory</h2>
+      <p>Manage inventory and stock levels.</p>
+      <button
+        className="btn btn-primary"
+        onClick={goToInventory}
+      >
+        Go to Inventory
+      </button>
+    </div>
+  </div>
+</div>
+<div className="col-md-6">
+  <div className="card mb-4">
+    <div className="card-body">
+      <h2>Menu</h2>
+      <p>Update and customize your menu items.</p>
+      <button
+        className="btn btn-primary"
+        onClick={goToMenu}
+      >
+        Go to Menu
+      </button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+
   );
 };
 
